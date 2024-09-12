@@ -48,6 +48,16 @@ public class EmployeeController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> patchEmployee(@PathVariable int id, @RequestBody EmployeeDTO employeeDTO) {
+        EmployeeDTO updatedEmployee = employeeService.patchEmployee(id, employeeDTO);
+        if (updatedEmployee != null) {
+            return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
         boolean deleted = employeeService.deleteEmployee(id);
