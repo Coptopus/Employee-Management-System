@@ -20,7 +20,6 @@ public class EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
@@ -28,6 +27,32 @@ public class EmployeeService {
     public EmployeeDTO getEmployeeById(int id) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         return employeeOptional.map(employee -> modelMapper.map(employee, EmployeeDTO.class)).orElse(null);
+    }
+
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = modelMapper.map(employeeDTO, Employee.class);
+        employee = employeeRepository.save(employee);
+        return modelMapper.map(employee, EmployeeDTO.class);
+    }
+
+    public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent()) {
+            Employee employee = employeeOptional.get();
+            employee.setName(employeeDTO.getName());
+            employee.setSalary(employeeDTO.getSalary());
+            employee = employeeRepository.save(employee);
+            return modelMapper.map(employee, EmployeeDTO.class);
+        }
+        return null;
+    }
+
+    public boolean deleteEmployee(int id) {
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }
