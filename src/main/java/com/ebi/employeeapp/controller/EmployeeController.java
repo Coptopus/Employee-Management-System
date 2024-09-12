@@ -1,6 +1,5 @@
 package com.ebi.employeeapp.controller;
 
-import com.ebi.employeeapp.model.Employee;
 import com.ebi.employeeapp.model.EmployeeDTO;
 import com.ebi.employeeapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

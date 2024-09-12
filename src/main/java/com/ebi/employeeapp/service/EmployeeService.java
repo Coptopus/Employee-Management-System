@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements EmployeeServiceInt{
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -19,21 +20,26 @@ public class EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    @Override
+    public List<EmployeeDTO> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        return employees.stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
     }
 
+    @Override
     public EmployeeDTO getEmployeeById(int id) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         return employeeOptional.map(employee -> modelMapper.map(employee, EmployeeDTO.class)).orElse(null);
     }
 
+    @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employee = employeeRepository.save(employee);
         return modelMapper.map(employee, EmployeeDTO.class);
     }
 
+    @Override
     public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         if (employeeOptional.isPresent()) {
@@ -46,6 +52,7 @@ public class EmployeeService {
         return null;
     }
 
+    @Override
     public EmployeeDTO patchEmployee(int id, EmployeeDTO employeeDTO) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         if (employeeOptional.isPresent()) {
@@ -62,6 +69,7 @@ public class EmployeeService {
         return null;
     }
 
+    @Override
     public boolean deleteEmployee(int id) {
         if (employeeRepository.existsById(id)) {
             employeeRepository.deleteById(id);
