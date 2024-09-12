@@ -8,6 +8,7 @@ import java.util.List;
 public interface EmployeeServiceInt {
     public List<EmployeeDTO> getAllEmployees();
     public EmployeeDTO getEmployeeById(int id);
+    public List<EmployeeDTO> getEmployeesByName(String name);
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
     public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO);
     public EmployeeDTO patchEmployee(int id, EmployeeDTO employeeDTO);

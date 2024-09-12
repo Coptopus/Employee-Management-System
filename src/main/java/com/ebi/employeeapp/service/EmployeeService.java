@@ -33,6 +33,11 @@ public class EmployeeService implements EmployeeServiceInt{
     }
 
     @Override
+    public List<EmployeeDTO> getEmployeesByName(String name){
+        return employeeRepository.findByName(name).stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employee = employeeRepository.save(employee);

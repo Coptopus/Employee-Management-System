@@ -32,6 +32,12 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping("/findBy")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesByName(@RequestParam String name) {
+        List<EmployeeDTO> employees = employeeService.getEmployeesByName(name);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO createdEmployee = employeeService.createEmployee(employeeDTO);
