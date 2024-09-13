@@ -6,11 +6,11 @@ import com.ebi.employeeapp.model.EmployeeDTO;
 import java.util.List;
 
 public interface EmployeeServiceInt {
-    public List<EmployeeDTO> getAllEmployees();
-    public EmployeeDTO getEmployeeById(int id);
-    public List<EmployeeDTO> getEmployeesByName(String name);
-    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
-    public EmpSaveDTO updateEmployee(EmpSaveDTO empSaveDTO);
-    public EmpSaveDTO patchEmployee(EmpSaveDTO empSaveDTO);
-    public boolean deleteEmployee(int id);
+    List<EmployeeDTO> getAllEmployees();
+    EmployeeDTO getEmployeeById(int id);
+    List<EmployeeDTO> getEmployeesByName(String name);
+    EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
+    EmpSaveDTO updateEmployee(EmpSaveDTO empSaveDTO);
+    EmpSaveDTO patchEmployee(EmpSaveDTO empSaveDTO);
+    boolean deleteEmployee(int id);
 }
