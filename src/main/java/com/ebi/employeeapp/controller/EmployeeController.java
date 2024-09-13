@@ -1,5 +1,6 @@
 package com.ebi.employeeapp.controller;
 
+import com.ebi.employeeapp.model.EmpSaveDTO;
 import com.ebi.employeeapp.model.EmployeeDTO;
 import com.ebi.employeeapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class EmployeeController {
         return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable int id ,@RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO updatedEmployee = employeeService.updateEmployee(id, employeeDTO);
+    @PutMapping
+    public ResponseEntity<EmpSaveDTO> updateEmployee(@RequestBody EmpSaveDTO empSaveDTO) {
+        EmpSaveDTO updatedEmployee = employeeService.updateEmployee(empSaveDTO);
         if (updatedEmployee != null) {
             return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
         } else {
@@ -54,9 +55,9 @@ public class EmployeeController {
         }
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> patchEmployee(@PathVariable int id, @RequestBody EmployeeDTO employeeDTO) {
-        EmployeeDTO updatedEmployee = employeeService.patchEmployee(id, employeeDTO);
+    @PatchMapping
+    public ResponseEntity<EmpSaveDTO> patchEmployee(@RequestBody EmpSaveDTO empSaveDTO) {
+        EmpSaveDTO updatedEmployee = employeeService.patchEmployee(empSaveDTO);
         if (updatedEmployee != null) {
             return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
         } else {

@@ -1,6 +1,7 @@
 package com.ebi.employeeapp.service;
 
-import com.ebi.employeeapp.model.Employee;
+import com.ebi.employeeapp.entity.Employee;
+import com.ebi.employeeapp.model.EmpSaveDTO;
 import com.ebi.employeeapp.model.EmployeeDTO;
 import com.ebi.employeeapp.repo.EmployeeRepository;
 import org.modelmapper.ModelMapper;
@@ -45,31 +46,31 @@ public class EmployeeService implements EmployeeServiceInt{
     }
 
     @Override
-    public EmployeeDTO updateEmployee(int id, EmployeeDTO employeeDTO) {
-        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+    public EmpSaveDTO updateEmployee(EmpSaveDTO empSaveDTO) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(empSaveDTO.getId_employee());
         if (employeeOptional.isPresent()) {
             Employee employee = employeeOptional.get();
-            employee.setName(employeeDTO.getName());
-            employee.setSalary(employeeDTO.getSalary());
+            employee.setName(empSaveDTO.getName());
+            employee.setSalary(empSaveDTO.getSalary());
             employee = employeeRepository.save(employee);
-            return modelMapper.map(employee, EmployeeDTO.class);
+            return modelMapper.map(employee, EmpSaveDTO.class);
         }
         return null;
     }
 
     @Override
-    public EmployeeDTO patchEmployee(int id, EmployeeDTO employeeDTO) {
-        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+    public EmpSaveDTO patchEmployee(EmpSaveDTO empSaveDTO) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(empSaveDTO.getId_employee());
         if (employeeOptional.isPresent()) {
             Employee existingEmployee = employeeOptional.get();
-            if (employeeDTO.getName() != null) {
-                existingEmployee.setName(employeeDTO.getName());
+            if (empSaveDTO.getName() != null) {
+                existingEmployee.setName(empSaveDTO.getName());
             }
-            if (employeeDTO.getSalary() != 0){
-                existingEmployee.setSalary(employeeDTO.getSalary());
+            if (!Double.isNaN(empSaveDTO.getSalary())){
+                existingEmployee.setSalary(empSaveDTO.getSalary());
             }
             Employee updatedEmployee = employeeRepository.save(existingEmployee);
-            return modelMapper.map(updatedEmployee, EmployeeDTO.class);
+            return modelMapper.map(updatedEmployee, EmpSaveDTO.class);
         }
         return null;
     }
