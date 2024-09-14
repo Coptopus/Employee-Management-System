@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+    <style>
+        table, th, td {
+            border: 2px solid black;
+            border-collapse: collapse;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        a{
+            text-decoration: none;
+            text-shadow: black 0 0 1px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Salary</th>
+            <th>Options</th>
+        </tr>
+        <tr th:each="employee : ${employees}">
+            <td style="font-weight: bold" th:inline="text">[[${employee.getId_employee()}]]</td>
+            <td th:inline="text">[[${employee.getName()}]]</td>
+            <td th:inline="text">LE [[${employee.getSalary()}]]</td>
+            <td><a style="color: orange;" href="">Update</a><br><a style="color: red" href="">Delete</a></td>
+        </tr>
+        </thead>
+    </table>
+    <p><a href="../employees/addEmployee" style="font-size: 36px; text-decoration: none; color: green">+ Add Employee</a></p>
+</body>
+</html>

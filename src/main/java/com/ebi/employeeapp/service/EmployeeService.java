@@ -66,6 +66,9 @@ public class EmployeeService implements EmployeeServiceInt{
             if (empSaveDTO.getName() != null) {
                 existingEmployee.setName(empSaveDTO.getName());
             }
+            if (empSaveDTO.getSalary() <= 0){
+                throw new IllegalArgumentException("Salary should be greater than 0");
+            }
             if (!Double.isNaN(empSaveDTO.getSalary())){
                 existingEmployee.setSalary(empSaveDTO.getSalary());
             }
