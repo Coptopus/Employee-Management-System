@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Employees</title>
+    <title>Deleting Employee</title>
+    <meta charset="utf-8">
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
     <!-- CSS Files -->
@@ -27,14 +27,6 @@
     <!-- FancyBox -->
     <link rel="stylesheet" type="text/css" href="/js/fancybox/jquery.fancybox.css" media="all">
     <script src="/js/fancybox/jquery.fancybox-1.2.1.js"></script>
-    <style>
-        table, th, td {
-            border: 2px solid black;
-            border-collapse: collapse;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    </style>
 </head>
 <body>
 <div class="header">
@@ -58,29 +50,19 @@
 </div>
 <!-- END header -->
 <div id="container">
-    <h1>Employees</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Salary</th>
-            <th>Options</th>
-        </tr>
-        <tr th:each="employee : ${employees}">
-            <td style="font-weight: bold; font-size: 20px" th:inline="text">[[${employee.getId_employee()}]]</td>
-            <td style="font-size: 20px" th:inline="text">[[${employee.getName()}]]</td>
-            <td style="font-size: 20px" th:inline="text">LE [[${employee.getSalary()}]]</td>
-            <td>
-                <ul style=" display: flex; list-style-type: none;padding: 0;margin: 0;">
-                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/employees/edit/{id}(id=${employee.getId_employee()})}"><img height="20" width="20" src="/editico.png" alt="edit"> Update</a></li>
-                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/employees/delete/{id}(id=${employee.getId_employee()})}"><img height="20" width="20" src="/deletico.png" alt="delete">Delete</a></li>
-                </ul>
-                </td>
-        </tr>
-        </thead>
-    </table>
-    <p><a href="../employees/addEmployee" class="button" style="font-size: 36px; height: 40px; align-content: center; text-decoration: none;">+ Add Employee</a></p>
+    <h2>ATTENTION</h2>
+    <h3>You're now deleting this record</h3>
+    <ul>
+        <li style="font-weight: bold; font-size: 20px" th:inline="text">ID: [[${employee.getId_employee()}]]</li>
+        <li style="font-size: 20px" th:inline="text">Name: [[${employee.getName()}]]</li>
+        <li style="font-size: 20px" th:inline="text">Salary: LE [[${employee.getSalary()}]]</li>
+    </ul>
+    <div style="clear:both; height: 40px"></div>
+    <h3>Do you really wish to proceed? (This can't be undone)</h3>
+    <form action="#" th:action="@{/employees/delete/{id}(id=${employee.getId_employee()})}" method="post">
+        <button class="button" style="font-size: 20px" type="submit">Yes</button>
+        <a href="/employees/view"><button class="button" style="font-size: 20px" type="button">No</button></a>
+    </form>
     <div style="clear:both; height: 40px"></div>
 </div>
 <!-- close container -->
