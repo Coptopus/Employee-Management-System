@@ -31,8 +31,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/home")
-    public String getHome(Model model) {
-
+    public String getHome() {
         return "index";
     }
 
@@ -55,11 +54,18 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/findBy")
+    @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<EmployeeDTO>> getEmployeesByName(@RequestParam String name) {
-        List<EmployeeDTO> employees = employeeService.getEmployeesByName(name);
+    public ResponseEntity<List<EmployeeDTO>> searchEmployees(@RequestParam String name) {
+        List<EmployeeDTO> employees = employeeService.searchEmployeesByName(name);
         return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/view/{id}")
+    public String getEmployeeById(@PathVariable int id, Model model) {
+        EmployeeDTO employeeDTO = employeeService.getEmployeeById(id);
+        model.addAttribute("employees", employeeDTO);
+        return "employeeSpec";
     }
 
     @PostMapping
@@ -69,13 +75,13 @@ public class EmployeeController {
         return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
-    @GetMapping("/addEmployee")
+    @GetMapping("/add")
     public String getForm(Model model){
         model.addAttribute("employee", new EmployeeDTO());
         return "addEmployee";
     }
 
-    @PostMapping("/addEmployee")
+    @PostMapping("/add")
     public String postForm(@ModelAttribute("employee") EmployeeDTO employeeDTO) {
         employeeService.createEmployee(employeeDTO);
         return "redirect:../employees/view";

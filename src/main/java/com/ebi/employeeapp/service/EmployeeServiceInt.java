@@ -9,6 +9,7 @@ public interface EmployeeServiceInt {
     List<EmployeeDTO> getAllEmployees();
     EmployeeDTO getEmployeeById(int id);
     List<EmployeeDTO> getEmployeesByName(String name);
+    List<EmployeeDTO> searchEmployeesByName(String name);
     EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
     EmpSaveDTO updateEmployee(EmpSaveDTO empSaveDTO);
     EmpSaveDTO patchEmployee(EmpSaveDTO empSaveDTO);

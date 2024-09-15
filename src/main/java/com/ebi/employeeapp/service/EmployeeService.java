@@ -39,6 +39,11 @@ public class EmployeeService implements EmployeeServiceInt{
     }
 
     @Override
+    public List<EmployeeDTO> searchEmployeesByName(String name) {
+        return employeeRepository.findByNameContainingIgnoreCase(name).stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employee = employeeRepository.save(employee);

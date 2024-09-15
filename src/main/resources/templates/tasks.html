@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Employees</title>
+    <title>Tasks</title>
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
     <!-- CSS Files -->
@@ -50,6 +50,7 @@
                 <li><a th:href="@{/employees/view}">Employees</a></li>
                 <li><a th:href="@{/tasks/view}">Tasks</a></li>
                 <li><a href="https://github.com/Coptopus">My GitHub</a></li>
+
             </ol>
         </li>
         <!-- END sub menu -->
@@ -58,29 +59,34 @@
 </div>
 <!-- END header -->
 <div id="container">
-    <h1>Employees</h1>
+    <h1>Tasks</h1>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Salary</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Assigned Employee</th>
             <th>Options</th>
         </tr>
-        <tr th:each="employee : ${employees}">
-            <td style="font-weight: bold; font-size: 20px" th:inline="text">[[${employee.getId_employee()}]]</td>
-            <td style="font-size: 20px" th:inline="text"><a th:href="@{/employees/view/{id}(id = ${employee.getId_employee()})}">[[${employee.getName()}]]</a></td>
-            <td style="font-size: 20px" th:inline="text">LE [[${employee.getSalary()}]]</td>
+        <tr th:each="task : ${tasks}">
+            <td style="font-weight: bold; font-size: 20px" th:inline="text">[[${task.getId()}]]</td>
+            <td style="font-size: 20px" th:inline="text">[[${task.getTitle()}]]</td>
+            <td style="font-size: 20px" th:inline="text">[[${task.getDescription()}]]</td>
+            <td style="font-size: 20px" th:inline="text">[[${task.getLocation()}]]</td>
+            <td th:if="${task.getEmployee() != null}" style="font-size: 20px" th:inline="text"><a th:href="@{/employees/view/{id}(id = ${task.getEmployee().id_employee})}">[[${task?.getEmployee().name}]]</a></td>
+            <td th:if="${task.getEmployee() == null}" style="font-size: 20px" th:inline="text">Unassigned</td>
             <td>
                 <ul style=" display: flex; list-style-type: none;padding: 0;margin: 0;">
-                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/employees/edit/{id}(id=${employee.getId_employee()})}"><img height="20" width="20" src="/editico.png" alt="edit"> Update</a></li>
-                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/employees/delete/{id}(id=${employee.getId_employee()})}"><img height="20" width="20" src="/deletico.png" alt="delete">Delete</a></li>
+                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/tasks/edit/{id}(id=${task.getId()})}"><img height="20" width="20" src="/editico.png" alt="edit"> Update</a></li>
+                    <li style="margin-right: 20px;"><a style="color: black; font-size: 20px" th:href="@{/tasks/delete/{id}(id=${task.getId()})}"><img height="20" width="20" src="/deletico.png" alt="delete">Delete</a></li>
                 </ul>
-                </td>
+            </td>
         </tr>
         </thead>
     </table>
-    <p><a href="../employees/add" class="button" style="font-size: 36px; height: 40px; align-content: center; text-decoration: none;">+ Add Employee</a></p>
+    <p><a href="../tasks/add" class="button" style="font-size: 36px; height: 40px; align-content: center; text-decoration: none;">+ Create New Task</a></p>
     <div style="clear:both; height: 40px"></div>
 </div>
 <!-- close container -->
