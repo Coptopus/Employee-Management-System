@@ -78,7 +78,9 @@ public class TaskService implements TaskServiceInt {
             if (taskSaveDTO.getLocation() != null) {
                 existingTask.setLocation(taskSaveDTO.getLocation());
             }
-            employeeOptional.ifPresent(existingTask::setEmployee);
+            if (employeeOptional.isPresent()) {
+                existingTask.setEmployee(employeeOptional.get());
+            }
             Task task = taskRepository.save(existingTask);
             return modelMapper.map(task, TaskSaveDTO.class);
         }

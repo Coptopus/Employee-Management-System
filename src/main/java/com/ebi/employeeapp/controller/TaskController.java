@@ -1,5 +1,8 @@
 package com.ebi.employeeapp.controller;
 
+import com.ebi.employeeapp.exceptions.ResourceNotFoundException;
+import com.ebi.employeeapp.model.EmpSaveDTO;
+import com.ebi.employeeapp.model.EmployeeDTO;
 import com.ebi.employeeapp.model.TaskDTO;
 import com.ebi.employeeapp.model.TaskSaveDTO;
 import com.ebi.employeeapp.service.TaskService;
@@ -44,6 +47,18 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/add")
+    public String getForm(Model model){
+        model.addAttribute("task", new TaskDTO());
+        return "addTask";
+    }
+
+    @PostMapping("/add")
+    public String postForm(@ModelAttribute("task") TaskDTO taskDTO) {
+        taskService.addTask(taskDTO);
+        return "redirect:../tasks/view";
+    }
+
     @PostMapping
     @ResponseBody
     public ResponseEntity<TaskDTO> addTask(@RequestBody TaskDTO task) {
@@ -74,6 +89,24 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+
+        TaskDTO task = taskService.getTaskById(id);
+        model.addAttribute("task", task);
+        return "updateTask";
+    }
+
+    @PostMapping("/update")
+    public String postUpdateForm(TaskSaveDTO taskSaveDTO) {
+        TaskSaveDTO updatedTask = taskService.patchTask(taskSaveDTO);
+        if (updatedTask != null) {
+            return "redirect:../tasks/view";
+        } else {
+            throw new ResourceNotFoundException("Task with id " + taskSaveDTO.getId() + " not found");
+        }
+    }
+
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteTask(@PathVariable int id) {
@@ -82,6 +115,22 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteTaskByID(@PathVariable int id, Model model) {
+        model.addAttribute("task", taskService.getTaskById(id));
+        return "deleteTask";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteTaskByIdReturn(@PathVariable int id) {
+        boolean deleted = taskService.deleteTask(id);
+        if (deleted) {
+            return "redirect:../view";
+        } else {
+            throw new ResourceNotFoundException("Task with id " + id + " not found");
         }
     }
 
