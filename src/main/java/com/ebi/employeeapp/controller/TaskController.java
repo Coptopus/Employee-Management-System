@@ -5,6 +5,7 @@ import com.ebi.employeeapp.model.EmpSaveDTO;
 import com.ebi.employeeapp.model.EmployeeDTO;
 import com.ebi.employeeapp.model.TaskDTO;
 import com.ebi.employeeapp.model.TaskSaveDTO;
+import com.ebi.employeeapp.service.EmployeeService;
 import com.ebi.employeeapp.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping
     @ResponseBody
@@ -99,6 +102,38 @@ public class TaskController {
 
     @PostMapping("/update")
     public String postUpdateForm(TaskSaveDTO taskSaveDTO) {
+        TaskSaveDTO updatedTask = taskService.patchTask(taskSaveDTO);
+        if (updatedTask != null) {
+            return "redirect:../tasks/view";
+        } else {
+            throw new ResourceNotFoundException("Task with id " + taskSaveDTO.getId() + " not found");
+        }
+    }
+
+    @GetMapping("/assign/{id}")
+    public String assignEmployee(@PathVariable("id") int id, Model model) {
+
+        TaskDTO task = taskService.getTaskById(id);
+        TaskSaveDTO taskSaveDTO;
+        if (task.getEmployee() != null) {
+            taskSaveDTO = new TaskSaveDTO(task.getId(), task.getTitle(), task.getDescription(), task.getLocation(), task.getEmployee().getId_employee());
+        }
+        else {
+            taskSaveDTO = new TaskSaveDTO(task.getId(), task.getTitle(), task.getDescription(), task.getLocation(), null);
+        }
+        model.addAttribute("task", taskSaveDTO);
+        // Get list of employees from the service
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        // Add the employee list to the model
+        model.addAttribute("employees", employees);
+        return "assignEmployee";
+    }
+
+    @PostMapping("/assign")
+    public String confirmAssignment(TaskSaveDTO taskSaveDTO) {
+        if (taskSaveDTO.getId_employee() == null) {
+            taskService.unassignEmployee(taskSaveDTO.getId());
+        }
         TaskSaveDTO updatedTask = taskService.patchTask(taskSaveDTO);
         if (updatedTask != null) {
             return "redirect:../tasks/view";

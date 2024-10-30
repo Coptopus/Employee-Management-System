@@ -14,5 +14,5 @@ public class TaskSaveDTO {
     private String title;
     private String description;
     private String location;
-    private int id_employee;
+    private Integer id_employee;
 }
